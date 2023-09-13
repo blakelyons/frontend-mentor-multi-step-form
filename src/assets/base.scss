@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
+@import "./mixins.scss";
+
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+    --clr-marine-blue: hsl(213, 96%, 18%);
+    --clr-purplish-blue: hsl(243, 100%, 62%);
+    --clr-pastel-blue: hsl(228, 100%, 84%);
+    --clr-light-blue: hsl(206, 94%, 87%);
+    --clr-strawberry-red: hsl(354, 84%, 57%);
+}
+
+/* neutral color variables for this project */
+:root {
+    --clr-cool-gray: #9699ab;
+    --clr-light-gray: #d6d9e6;
+    --clr-magnolia: #f0f6ff;
+    --clr-alabaster: #fafbff;
+    --clr-black: hsl(0, 0%, 0%);
+    --clr-white: hsl(0, 0%, 100%);
+}
+
+/* font variables */
+:root {
+    --ff-primary: "Ubuntu", sans-serif;
+}
+
+/* other variables */
+:root {
+    --max-width: 1440px;
+    --padding: 1rem;
+    --global-radius: 0.75rem;
+    --transition: 0.4s;
+    --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+    --btn-padding: 0.5em 1.5em;
+    --btn-border: 1px solid var(--clr-cool-gray);
+    --btn-border-radius: calc(var(--global-radius) / 2);
+    --btn-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+    --input-padding: 0.6em;
+    --input-border: 1px solid var(--clr-light-gray);
+    --input-border-radius: calc(var(--global-radius) / 2);
+    --input-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --input-font-size: 1rem;
+    --input-font-weight: 500;
+
+    --input-focus-border: 1px solid var(--clr-purplish-blue);
+    --input-error-border: 1px solid var(--clr-strawberry-red);
+    --input-success-border: 1px solid var(--clr-pastel-blue);
+
+    --input-placeholder-color: var(--clr-cool-gray);
+    --input-error-color: var(--clr-strawberry-red);
+    --input-success-color: var(--clr-pastel-blue);
+
+    --input-icon-color: var(--clr-cool-gray);
+    --input-icon-hover-color: var(--clr-purplish-blue);
+    --input-icon-focus-color: var(--clr-purplish-blue);
+    --input-icon-error-color: var(--clr-strawberry-red);
+    --input-icon-success-color: var(--clr-pastel-blue);
+    --input-icon-disabled-color: var(--clr-cool-gray);
+    --input-icon-disabled-hover-color: var(--clr-cool-gray);
+    --input-icon-disabled-focus-color: var(--clr-cool-gray);
+    --input-icon-disabled-error-color: var(--clr-cool-gray);
+    --input-icon-disabled-success-color: var(--clr-cool-gray);
+    --input-icon-size: 1.5rem;
+    --input-icon-margin: 0 0.5rem 0 0;
+    --input-icon-disabled-opacity: 0.5;
+
+    --input-label-color: var(--clr-marine-blue);
+    --input-label-font-size: 0.875rem;
+    --input-label-font-weight: 500;
+    --input-label-margin: 0 0 0.5rem 0;
+    --input-label-error-color: var(--clr-strawberry-red);
+
+    --input-message-color: var(--clr-cool-gray);
+    --input-message-font-size: 0.875rem;
+    --input-message-font-weight: 500;
+    --input-message-margin: 0.25rem 0 0 0;
+    --input-message-error-color: var(--clr-strawberry-red);
+    --input-message-success-color: var(--clr-pastel-blue);
+
+    --transition-delay: 0.2s;
+    --transition-ease-in: all cubic-bezier(0.36, 0.53, 0.33, 1.01) var(--transition-delay);
+
+    --round-border-radius: 50%;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    display: flex;
+    place-items: start;
+    min-height: 100vh;
+    color: var(--clr-black);
+    background: var(--clr-magnolia);
+    font-family: var(--ff-primary);
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @include transition;
+
+    @media screen and (min-width: 60em) {
+        place-items: center;
+    }
+}
+
+#multiStepFormApp {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    padding: var(--padding);
+    @include transition;
+
+    @media screen and (max-width: 40em) {
+        width: 100%;
+        height: 100vh;
+    }
+}
+
+/* ----- Global General Styles ----- */
+.hidden {
+    display: none;
+}
+
+.not-visible {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.visibile {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ----- Global Transitions ----- */
+.slide-up-enter-active,
+.slide-leave-active {
+    transition: all 250ms ease-in;
+    transition-delay: 250ms;
+}
+
+// Start Enter
+.slide-up-enter-from {
+    opacity: 0;
+    position: absolute;
+    translate: 0 1rem;
+}
+
+// Finish Enter
+.slide-up-enter-to {
+    opacity: 1;
+    translate: 0 0;
+}
+
+// Start Leave
+.slide-up-leave-from {
+    opacity: 1;
+    translate: 0 0;
+}
+
+// Finish Leave
+.slide-up-leave-to {
+    opacity: 0;
+    translate: 0 1rem;
+}

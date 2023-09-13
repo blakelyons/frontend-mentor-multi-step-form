@@ -1,0 +1,154 @@
+@import "./base.scss";
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--ff-primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 2.25rem;
+    color: var(--clr-marine-blue);
+}
+
+h3 {
+    font-style: italic;
+}
+
+.subtitle {
+    color: var(--clr-cool-gray);
+}
+
+a {
+    text-decoration: none;
+    color: var(--clr-marine-blue);
+    transition: 0.4s;
+}
+
+.button {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-items: center;
+    align-items: center;
+    color: var(--clr-marine-blue);
+    padding: var(--btn-padding);
+    border-radius: var(--btn-border-radius);
+    border: var(--btn-border);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-ease-in);
+    position: relative;
+
+    * {
+        @include transition;
+    }
+
+    .button__text {
+        display: inline-block;
+    }
+
+    &--primary {
+        background: var(--clr-marine-blue);
+        color: var(--clr-white);
+
+        &:hover {
+            background: var(--clr-purplish-blue);
+            box-shadow: var(--btn-shadow);
+        }
+
+        &.has-icon:hover {
+            .button__text {
+                transform: translateX(-0.5rem);
+            }
+        }
+    }
+
+    &:hover {
+        .icon.left {
+            translate: 0 0.1rem;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .icon.right {
+            translate: -0.45rem 0.1rem;
+            visibility: visible;
+            opacity: 1;
+            right: 0;
+        }
+    }
+
+    .icon {
+        translate: 1rem 0.1rem;
+        opacity: 0;
+        visibility: hidden;
+        @include transition;
+
+        svg {
+            width: 1.25rem;
+        }
+
+        &.right {
+            translate: -1rem 0.1rem;
+        }
+    }
+
+    .icon.left {
+        margin-right: 0.1rem;
+    }
+
+    .icon.right {
+        position: absolute;
+        right: 1rem;
+        top: 0.2rem;
+        transform: rotate(180deg);
+    }
+
+    &--clear {
+        background: none;
+        border: 1px solid transparent;
+        font-weight: 700;
+        font-size: 0.875rem;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: -1rem;
+        color: var(--clr-cool-gray);
+
+        .button__text {
+            font-weight: inherit;
+        }
+
+        .icon {
+            display: inline-block;
+            translate: 1rem 0.1rem;
+            opacity: 0;
+            visibility: hidden;
+            @include transition;
+
+            margin-right: 0.1rem;
+            svg {
+                width: 1.25rem;
+            }
+        }
+
+        &:hover {
+            background: none;
+            color: var(--clr-purplish-blue);
+            margin-left: 0;
+        }
+    }
+}
+
+@media (hover: hover) {
+    a:hover {
+        background-color: var(--clr-purplish-blue);
+    }
+}
+
+// Multi Step Form
+@import "./multi-step-form.scss";
