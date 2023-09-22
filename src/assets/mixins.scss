@@ -1,3 +1,16 @@
 @mixin transition {
     transition: all 250ms ease-in;
 }
+
+// Button Size Mixin returns a font size based on small, medium, or large
+@mixin button-size($size) {
+    @if $size == small {
+        font-size: var(--btn-small);
+    } @else if $size == medium {
+        font-size: var(--btn-medium);
+    } @else if $size == large {
+        font-size: var(--btn-large);
+    } @else {
+        font-size: var(--btn-small);
+    }
+}

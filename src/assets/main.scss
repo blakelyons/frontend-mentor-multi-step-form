@@ -41,8 +41,21 @@ a {
     border: var(--btn-border);
     font-weight: 500;
     cursor: pointer;
-    transition: var(--transition-ease-in);
+    transition: var(--transition-default);
     position: relative;
+    @include button-size(small);
+
+    &--small {
+        @include button-size(small);
+    }
+
+    &--medium {
+        @include button-size(medium);
+    }
+
+    &--large {
+        @include button-size(large);
+    }
 
     * {
         @include transition;
@@ -56,7 +69,7 @@ a {
         background: var(--clr-marine-blue);
         color: var(--clr-white);
 
-        &:hover {
+        &:not(.button.button--simple):hover {
             background: var(--clr-purplish-blue);
             box-shadow: var(--btn-shadow);
         }
@@ -65,6 +78,16 @@ a {
             .button__text {
                 transform: translateX(-0.5rem);
             }
+        }
+    }
+
+    &.button--disabled {
+        background: var(--clr-cool-gray);
+        pointer-events: none;
+        cursor: default;
+
+        &:hover {
+            background: var(--clr-cool-gray) !important;
         }
     }
 
@@ -113,7 +136,6 @@ a {
         background: none;
         border: 1px solid transparent;
         font-weight: 700;
-        font-size: 0.875rem;
         padding-left: 0;
         padding-right: 0;
         margin-left: -1rem;
@@ -136,10 +158,19 @@ a {
             }
         }
 
-        &:hover {
+        &:not(.button.button--simple):hover {
             background: none;
             color: var(--clr-purplish-blue);
             margin-left: 0;
+        }
+    }
+    &--simple {
+        &:active,
+        &:hover {
+            color: var(--clr-marine-blue);
+        }
+        &.active {
+            color: var(--clr-marine-blue);
         }
     }
 }
@@ -152,3 +183,8 @@ a {
 
 // Multi Step Form
 @import "./multi-step-form.scss";
+
+.click-disabled {
+    pointer-events: none !important;
+    cursor: default !important;
+}

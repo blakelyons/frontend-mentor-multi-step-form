@@ -72,6 +72,9 @@
 
 <script setup>
 import {ref, onMounted, watch} from "vue";
+import {useFormValuesStore} from "@/stores/FormStoreData";
+
+const store = useFormValuesStore();
 
 const emit = defineEmits(["gotoStep"]);
 
@@ -87,6 +90,8 @@ const props = defineProps({
 });
 
 const gotoStep = (step) => {
+    if (!store.valid) return;
+
     currentStep.value = storeCurrentStep.value = step;
     emit("gotoStep", currentStep.value); // Emit event to MutliStepFormView
 };

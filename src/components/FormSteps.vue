@@ -1,5 +1,5 @@
 <template>
-    <FormHeader :currentStepTitle="stepTitle" :currentStepSubTitle="stepSubtitle" />
+    <FormHeader :currentStepTitle="stepTitle" :currentStepSubTitle="stepSubtitle" required="required" />
     <swiper-container
         :allowTouchMove="false"
         @swiper="onSwiper"
@@ -11,55 +11,54 @@
         <!-- Page 1 -->
         <swiper-slide>
             <section class="form-page" data-step="1" key="1">
-                <div class="form__group">
-                    <label for="name" class="error">Name</label>
-                    <input type="text" id="name" class="error" :placeholder="namePlaceholder" v-model="name" />
-                </div>
-                <div class="form__group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" :placeholder="emailPlaceholder" v-model="email" />
-                </div>
-                <div class="form__group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" :placeholder="phonePlaceholder" v-model="phone" />
-                </div>
+                <FormFields @validation-status="nextButtonHandler" />
             </section>
         </swiper-slide>
+
         <!-- Page 2 -->
         <swiper-slide>
             <section class="form-page" key="2">
-                <div class="form__group">
-                    <label for="plan">Select Plan</label>
-                    <div class="plans" v-for="plan in plans" :key="plan.id">
-                        <div class="plans__plan">
-                            <div class="icon"></div>
-                            <div class="plan-name">
-                                <h2>Arcade</h2>
-                                <p class="price-per-month">$9/mo</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <PlanOptions :frequency="billingFrequency" @plan-selected="nextButtonHandler" />
+                <PlanFrequency @toggle-frequency="updateBillingFrequency" />
             </section>
         </swiper-slide>
+
         <!-- Page 3 -->
         <swiper-slide>
-            <section class="form-page" key="3"></section>
+            <section class="form-page" key="3">
+                <AddOns @selected-add-on="addOnHandler" :frequency="billingFrequency" />
+            </section>
         </swiper-slide>
+
         <!-- Page 4 -->
         <swiper-slide>
             <section class="form-page" key="4">
-                <h3>Step 4</h3>
+                <FormSummary />
             </section>
         </swiper-slide>
     </swiper-container>
-    <FormAction @next-step="formStepHandler" @go-to-prev-step="formStepHandler" @go-to-next-step="formStepHandler" :currentStepActive="currentStep" />
+    <FormAction
+        @next-step="formStepHandler"
+        :disableNextButton="disableNextButton"
+        :hidePrevButton="hidePrevButton"
+        @go-to-prev-step="formStepHandler"
+        @go-to-next-step="formStepHandler"
+        :currentStepActive="currentStep"
+    />
 </template>
 
 <script setup>
 import {ref, onMounted, watch} from "vue";
+import {useFormValuesStore} from "@/stores/FormStoreData";
 import FormHeader from "@/components/FormHeader.vue";
+import FormFields from "./FormFields.vue";
+import PlanFrequency from "./PlanFrequencyController.vue";
+import PlanOptions from "@/components/PlanOptions.vue";
+import AddOns from "@/components/AddOns.vue";
+import FormSummary from "@/components/FormSummary.vue";
 import FormAction from "@/components/FormAction.vue";
+
+const store = useFormValuesStore();
 
 // core version + navigation, pagination modules:
 import {register} from "swiper/element/bundle";
@@ -76,32 +75,25 @@ const props = defineProps({
     },
 });
 
-const currentStep = ref(1);
+const currentStep = ref(2);
 
 const stepTitle = ref("");
 const stepSubtitle = ref("");
 
-// Step 1
-const name = ref(null);
-const namePlaceholder = ref("e.g. Stephen King");
-
-const email = ref(null);
-const emailPlaceholder = ref("e.g. stephenking@lorem.com");
-
-const phone = ref(null);
-const phonePlaceholder = ref("e.g. +1 234 567 890");
+const disableNextButton = ref(store.getDisableNextButton());
+const hidePrevButton = ref(true);
 
 // Step 2
-const plans = ref([
-    {
-        id: 0,
-        planName: "Arcade",
-        price: 9,
-        frequency: "mo",
-    },
-]);
+const billingFrequency = ref("Monthly");
+
+const updateBillingFrequency = () => {
+    billingFrequency.value = store.getBillingFrequency();
+};
 
 // Step 3
+const addOnHandler = (selectedAddOns) => {
+    console.log(`Selected Add-Ons: ${selectedAddOns}`);
+};
 
 // Step 4
 
@@ -116,7 +108,22 @@ const formStepHandler = (step) => {
     currentStep.value = step;
     let gotoStep = step - 1;
     emit("gotoStep", currentStep.value);
+
+    if (step > 1) {
+        hidePrevButton.value = false;
+    }
+
     swiper.swiper.slideTo(gotoStep);
+    swiper.swiper.on("slideNextTransitionEnd", () => {
+        store.valid = false;
+        nextButtonHandler(store.valid);
+    });
+};
+
+const nextButtonHandler = () => {
+    console.log(`nextButtonHandler ${store.valid}`);
+    store.setDisableNextButton(store.valid);
+    disableNextButton.value = store.getDisableNextButton();
 };
 
 watch(
@@ -132,7 +139,7 @@ watch(
                 break;
             case 2:
                 stepTitle.value = "Select your plan";
-                stepSubtitle.value = "You have the option of monthly or yearly billing";
+                stepSubtitle.value = "You have the option of Monthly or Yearly billing";
                 break;
             case 3:
                 stepTitle.value = "Pick add-ons";
@@ -148,12 +155,11 @@ watch(
     }
 );
 
+// Watch store.disableNextButton for changes and update the local value
+
 onMounted(() => {
     stepTitle.value = "Personal Info";
+    formStepHandler(currentStep.value);
     stepSubtitle.value = "Please provide your name, email address, and phone number";
-});
-
-defineExpose({
-    currentStep,
 });
 </script>

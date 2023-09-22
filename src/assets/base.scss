@@ -38,13 +38,16 @@
     --btn-border: 1px solid var(--clr-cool-gray);
     --btn-border-radius: calc(var(--global-radius) / 2);
     --btn-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --btn-small: 0.875rem;
+    --btn-medium: 1rem;
+    --btn-large: 1.125rem;
 
-    --input-padding: 0.6em;
-    --input-border: 1px solid var(--clr-light-gray);
-    --input-border-radius: calc(var(--global-radius) / 2);
+    --input-padding: 0.75em;
+    --default-border: 2px solid var(--clr-light-gray);
+    --default-border-radius: calc(var(--global-radius) / 2);
     --input-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     --input-font-size: 1rem;
-    --input-font-weight: 500;
+    --input-font-weight: 700;
 
     --input-focus-border: 1px solid var(--clr-purplish-blue);
     --input-error-border: 1px solid var(--clr-strawberry-red);
@@ -82,7 +85,7 @@
     --input-message-success-color: var(--clr-pastel-blue);
 
     --transition-delay: 0.2s;
-    --transition-ease-in: all cubic-bezier(0.36, 0.53, 0.33, 1.01) var(--transition-delay);
+    --transition-default: all cubic-bezier(0.36, 0.53, 0.33, 1.01) var(--transition-delay);
 
     --round-border-radius: 50%;
 }
@@ -176,3 +179,13 @@ body {
     opacity: 0;
     translate: 0 1rem;
 }
+
+/* Add this CSS to your styles */
+.price-fade-enter-active,
+.price-fade-leave-active {
+    transition: opacity 0.5s;
+}
+.price-fade-enter, .price-fade-leave-to /* .price-fade-leave-active in <2.1.8 */ {
+    opacity: 0;
+}
+
